@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <title>คำนวณวันเกิด (ภาษาไทย)</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://npmcdn.com/flatpickr/dist/l10n/th.js"></script>
+</head>
+<body style="font-family:sans-serif;text-align:center;padding:50px;">
+  <h2>เลือกวันเกิดของคุณ</h2>
+  <input id="birthday" type="text" placeholder="เลือกวันเกิด">
+
+  <div id="result" style="margin-top:20px;"></div>
+
+  <script>
+    flatpickr("#birthday", {
+      dateFormat: "Y-m-d",
+      locale: "th", // ใช้ภาษาไทย
+      onChange: function(selectedDates) {
+        const inputDate = selectedDates[0];
+        if (!inputDate) return;
+        const today = new Date();
+        let age = today.getFullYear() - inputDate.getFullYear();
+        const m = today.getMonth() - inputDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < inputDate.getDate())) age--;
+        const weekdays = ['วันอาทิตย์', 'วันจันทร์', 'วันอังคาร', 'วันพุธ', 'วันพฤหัสบดี', 'วันศุกร์', 'วันเสาร์'];
+        const dayName = weekdays[inputDate.getDay()];
+        document.getElementById('result').innerHTML =
+          `คุณอายุ <b>${age}</b> ปี<br>เกิดวัน <b>${dayName}</b>`;
+      }
+    });
+  </script>
+</body>
+</html>
