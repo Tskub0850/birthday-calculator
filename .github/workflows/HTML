@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- สำคัญมากสำหรับมือถือ -->
+    <title>เครื่องคิดเลขมือถือ</title>
+
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial;
+            margin: 0;
+            padding: 0;
+            transition: background 0.3s;
+        }
+
+        .calculator {
+            padding: 20px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+        }
+
+        #display {
+            width: 100%;
+            height: 70px;
+            font-size: 32px;
+            text-align: right;
+            padding: 10px;
+            border: none;
+            background: #ececec;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        button {
+            padding: 18px;
+            font-size: 26px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        /* ธีมสว่าง */
+        body.light { background: #f0f0f0; }
+        .light .calculator { background: white; }
+        .light #display { background: #ececec; }
+        .light button { background: #ddd; color: black; }
+        .light button:hover { background: #ccc; }
+
+        /* ธีมมืด */
+        body.dark { background: #1a1a1a; }
+        .dark .calculator { background: #2a2a2a; }
+        .dark #display { background: #333; color: white; }
+        .dark button { background: #444; color: white; }
+        .dark button:hover { background: #555; }
+
+        .operator { background: #ffb84d !important; }
+        .equal {
+            background: #4CAF50 !important;
+            color: white;
+            grid-column: span 2;
+        }
+        .themeBtn {
+            grid-column: span 4;
+            background: #4287f5 !important;
+            color: white;
+        }
+
+        /* รองรับจอเล็กมาก ๆ */
+        @media (max-width: 360px) {
+            #display {
+                font-size: 26px;
+                height: 60px;
+            }
+            button {
+                padding: 15px;
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+
+<body class="light">
+
+    <div class="calculator">
+        <input type="text" id="display" disabled>
+
+        <div class="buttons">
+
+            <button onclick="btn('C')">C</button>
+            <button onclick="btn('%')">%</button>
+            <button onclick="btn('/')">÷</button>
+            <button onclick="btn('*')">×</button>
+
+            <button onclick="btn('7')">7</button>
+            <button onclick="btn('8')">8</button>
+            <button onclick="btn('9')">9</button>
+            <button onclick="btn('-')" class="operator">-</button>
+
+            <button onclick="btn('4')">4</button>
+            <button onclick="btn('5')">5</button>
+            <button onclick="btn('6')">6</button>
+            <button onclick="btn('+')" class="operator">+</button>
+
+            <button onclick="btn('1')">1</button>
+            <button onclick="btn('2')">2</button>
+            <button onclick="btn('3')">3</button>
+            <button onclick="btn('.')">.</button>
+
+            <button onclick="btn('0')">0</button>
+
+            <button onclick="calculate()" class="equal">=</button>
+
+            <button class="themeBtn" onclick="toggleTheme()">สลับธีม</button>
+        </div>
+    </div>
+
+    <!-- เสียงปุ่ม -->
+    <audio id="sound">
+        <source src="data:audio/mp3;base64,//uQZAAAAAAAAAAAAAAAAAAAA..." type="audio/mp3">
+    </audio>
+
+    <script>
+        const sound = document.getElementById("sound");
+
+        function play() {
+            sound.currentTime = 0;
+            sound.play();
+        }
+
+        function btn(val) {
+            play();
+            if (val === "C") {
+                document.getElementById("display").value = "";
+            } else {
+                document.getElementById("display").value += val;
+            }
+        }
+
+        function calculate() {
+            play();
+            let exp = document.getElementById("display").value;
+            try {
+                let result = eval(exp);
+                document.getElementById("display").value = result;
+            } catch {
+                document.getElementById("display").value = "ERROR";
+            }
+        }
+
+        function toggleTheme() {
+            play();
+            const body = document.body;
+            body.classList.toggle("light");
+            body.classList.toggle("dark");
+        }
+    </script>
+
+</body>
+</html>
